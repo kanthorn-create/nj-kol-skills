@@ -1,6 +1,6 @@
 {
   "name": "nj-kol",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Native Jump — ค้น KOL จากคลังกลาง, หาคนคล้าย และทำเด็คเสนอลูกค้า (ต้องมีคีย์ส่วนตัวจากผู้ดูแลระบบ)",
   "author": {
     "name": "Native Jump",
