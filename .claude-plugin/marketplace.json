@@ -1,0 +1,13 @@
+{
+  "name": "nativejump-kol",
+  "owner": { "name": "Native Jump" },
+  "metadata": { "description": "เครื่องมือค้น KOL ของทีม Native Jump", "version": "1.0.0" },
+  "plugins": [
+    {
+      "name": "nj-kol",
+      "source": "./",
+      "description": "kol-search / kol-lookalike / kol-shortlist-deck — ค้น KOL จากคลังกลาง NJ (ต้องมีคีย์ส่วนตัว)",
+      "category": "workflow"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+# NJ KOL Vault — Team API
+
+ค้น KOL จากคลังกลางผ่าน API นี้ (ใช้กับ Claude / สคริปต์ / แอปที่ทีมทำเองได้)
+คลังทั้งชุดไม่เปิดให้ดึงตรง — ทุกคำขอผ่านฟังก์ชันที่จำกัดจำนวน และบันทึกว่าใครได้รายชื่อใครไป
+
+- ไม่มีราคา / ค่าตัว / QO ในข้อมูลนี้ — ถามราคาให้ติดต่อทีม KOL
+- ห้ามส่งรายชื่อออกนอกบริษัท
+- คีย์เป็นของแต่ละคน ห้ามแชร์ (ถูกปิดได้ทันที)
+
+## เรียกใช้
+
+```
+POST https://byupqdyfuzdqbnqfgxzv.supabase.co/rest/v1/rpc/<function>
+headers: apikey: <publishable key ใน skills/kol-search/config.json>
+         Content-Type: application/json
+```
+
+### 1) `kol_count` — นับจำนวน (ไม่จำกัด, ไม่มีรายชื่อ)
+
+```json
+{"p_key": "njk_...", "p_filters": {"category": ["Automobiles"], "vehicle": ["รถยนต์"]}, "p_group": "tier"}
+```
+`p_group` (ไม่ใส่ก็ได้): `tier` `grade` `region` `province` `vehicle` `brand_ok` `brand_level` `trend`
+
+### 2) `kol_search` — รายชื่อ (สูงสุด 50 คน/ครั้ง, 1,500 ชื่อ/24 ชม./คีย์)
+
+```json
+{"p_key": "njk_...", "p_filters": {"category": ["Food"], "tier": ["Micro"], "region": ["อีสาน"], "brand_ok": "ใช่"},
+ "p_limit": 30, "p_sort": "score"}
+```
+`p_sort`: `score` (ค่าเริ่มต้น) `median_views` `er` `followers`
+
+### 3) `kol_lookalike` — KOL ที่คล้ายกับ handle ตัวอย่าง (นับโควตาเดียวกัน)
+
+```json
+{"p_key": "njk_...", "p_handle": "bankzilla_", "p_filters": {"not_region": "กรุงเทพและปริมณฑล"}, "p_limit": 20}
+```
+ได้กลับ: `similarity` (0–100), `why`, `k` (ข้อมูล KOL)
+
+### 4) `kol_profile` — ข้อมูลล่าสุดของรายชื่อที่ระบุ (≤50/ครั้ง; ชื่อที่ได้ไปแล้วใน 24 ชม. ไม่กินโควตาซ้ำ)
+
+```json
+{"p_key": "njk_...", "p_handles": ["bankzilla_", "nut_fe"]}
+```
+
+## ตัวกรอง (`p_filters`) — ใส่เฉพาะที่ต้องการ
+
+| key | ตัวอย่าง | ความหมาย |
+|---|---|---|
+| `category` | `["Food","Beauty"]` | หมวด TTO (ค้นแบบมีคำนี้อยู่) |
+| `tier` | `["Nano","Micro","Macro","Mega","Sub-1K"]` | |
+| `grade` | `["A","B"]` | เกรดจากคะแนนผลงาน |
+| `region` | `["อีสาน","ภาคเหนือ","ภาคใต้","ภาคกลาง","ภาคตะวันออก","ภาคตะวันตก","กรุงเทพและปริมณฑล"]` | |
+| `not_region` | `"กรุงเทพและปริมณฑล"` | = ต่างจังหวัด (เฉพาะคนที่รู้จังหวัด) |
+| `province` | `["เชียงใหม่"]` | |
+| `vehicle` | `["รถยนต์","มอไซ","ทั้งสอง","ไม่ชัด"]` | เฉพาะหมวดรถ (แยกจากแคปชัน/bio) |
+| `brand_level` | `["ใช่ (ยืนยัน)","น่าจะเคย (แคปชัน)"]` | ระดับงานแบรนด์: **ใช่ (ยืนยัน)** = ป้าย sponsored/งานผ่าน TTO · **น่าจะเคย (แคปชัน)** = เจอ #ad/#sponsored/#pr, "ร่วมกับ…", @บัญชีแบรนด์ หรือ hashtag แบรนด์ในแคปชัน · `ไม่พบ` |
+| `affiliate` | `"exclude"` / `"only"` | ตัด/เอาเฉพาะคนที่ขายของ affiliate (#tiktokshop, ตะกร้า, พิกัด) |
+| `brand_ok` | `"ใช่"` / `"ไม่พบ"` | (แบบเก่า) = ใช่ (ยืนยัน) เท่านั้น |
+| `brand_name` | `["oppo","kfc"]` | เจอชื่อแบรนด์ในแคปชันคลิป sponsored หรือสัญญาณจากแคปชัน |
+| `keyword` | `["แม่ลูก"]` | คำใน bio / แคปชัน sponsored |
+| `min_views` / `max_views` | `10000` | ยอดวิวกลาง |
+| `min_er` | `5` | ER % |
+| `min_female` | `60` | % ผู้ชมหญิง |
+| `min_th` | `70` | % ผู้ชมไทย |
+
+## ฟิลด์ที่ได้กลับ
+handle, name, link, followers, tier, category, median_views, er, female_pct, top_age, th_pct, persona, bio,
+province, region, grade, score, trend, sponsored, tto_orders, brand_ok, brand_caps, vehicle, updated_at, brand_level, brand_signals, affiliate
+
+## Error
+- `invalid or disabled key` — คีย์ผิด/ถูกปิด
+- `daily limit reached` — คีย์นี้ครบโควตา 24 ชม. (ใช้ `kol_count` ได้ต่อ)

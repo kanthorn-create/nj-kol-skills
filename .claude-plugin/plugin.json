@@ -1,0 +1,7 @@
+{
+  "name": "nj-kol",
+  "version": "1.0.0",
+  "description": "Native Jump — ค้น KOL จากคลังกลาง, หาคนคล้าย และทำเด็คเสนอลูกค้า (ต้องมีคีย์ส่วนตัวจากผู้ดูแลระบบ)",
+  "author": { "name": "Native Jump", "url": "https://nativejump.co" },
+  "keywords": ["native-jump", "kol", "influencer-marketing", "tiktok"]
+}
