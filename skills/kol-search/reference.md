@@ -52,6 +52,7 @@
 | `brand_level` | `["ใช่ (ยืนยัน)","น่าจะเคย (แคปชัน)"]` | ระดับงานแบรนด์: **ใช่ (ยืนยัน)** = ป้าย sponsored/งานที่จ้างผ่านแพลตฟอร์ม · **น่าจะเคย (แคปชัน)** = เจอ #ad/#sponsored/#pr, "ร่วมกับ…", @บัญชีแบรนด์ หรือ hashtag แบรนด์ในแคปชัน · `ไม่พบ` |
 | `affiliate` | `"exclude"` / `"only"` | ตัด/เอาเฉพาะคนที่ขายของ affiliate (#tiktokshop, ตะกร้า, พิกัด) |
 | `live` | `"only"` / `"any"` | `only` = ไลฟ์ขายของ (bio บอกว่าไลฟ์เป็นประจำ + ติดตะกร้า/ขายของ) · `any` = bio บอกว่าไลฟ์ (รวมไลฟ์เกม/วาดรูป) |
+| `age` + `min_age_pct` | `["25-34","35-44"]`, `60` | ผู้ชมช่วงอายุที่ระบุรวมกันอย่างน้อย N% (ค่าเริ่ม 50) · ช่วงที่มี: 18-24, 25-34, 35-44, 45-54, 55+ · ใช้ผู้ชมที่มีส่วนร่วมเป็นหลัก |
 | `brand_ok` | `"ใช่"` / `"ไม่พบ"` | (แบบเก่า) = ใช่ (ยืนยัน) เท่านั้น |
 | `brand_name` | `["oppo","kfc"]` | เจอชื่อแบรนด์ในแคปชันคลิป sponsored หรือสัญญาณจากแคปชัน |
 | `keyword` | `["แม่ลูก"]` | คำใน bio / แคปชัน sponsored |
@@ -64,7 +65,7 @@
 
 ## ฟิลด์ที่ได้กลับ
 handle, name, link, followers, tier, category, median_views, er, female_pct, top_age, th_pct, persona, bio,
-province, region, grade, score, trend, sponsored, platform_orders, brand_ok, brand_caps, vehicle, updated_at, brand_level, brand_signals, affiliate, live
+province, region, grade, score, trend, sponsored, platform_orders, brand_ok, brand_caps, vehicle, updated_at, brand_level, brand_signals, affiliate, live, age1, age2, age3, a1824, a2534, a3544, a4554, a55, age_src
 
 ## Error
 - `invalid or disabled key` — คีย์ผิด/ถูกปิด
